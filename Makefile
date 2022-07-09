@@ -1,25 +1,15 @@
-# cc and flags
-CC = g++
-FLAGS = -g -Wall -c -I$(INC)
-#CXXFLAGS = -std=c++11 -O3 -Wall
+CC = g++ 
+LIBS = -lm
+SRC = src
+OBJ = obj
+INC = include
+BIN = bin
+OBJS = $(OBJ)/wordcounter.o
+HDRS = $(INC)/wordcounter.hpp $(INC)/memlog.h
 
-# folders
-INC = ./include/
-BIN = ./bin/
-OBJ = ./obj/
-SRC = ./src/
-HDRS = $(INC)/email.hpp
-# all sources, objs, and header files
 TARGET = email
 
-all: $(OBJ)/email.o $(OBJ)/main.o
-	$(CC) -g -o $(BIN)/$(TARGET) $(OBJ)/email.o $(OBJ)/main.o -lm 
+all: $(TARGET)
 
-$(OBJ)/main.o: 
-	$(CC) $(FLAGS) -o $(OBJ)/main.o $(SRC)/main.cpp
-
-$(OBJ)/email.o: $(SRC)/email.cpp $(HDRS)
-	$(CC) $(FLAGS) -o $(OBJ)/email.o $(SRC)/email.cpp
-
-clean:
-	rm -rf $(OBJ)* $(BIN)*
+$(TARGET): $(SRC)/email.cpp $(SRC)/main.cpp 
+	$(CC) $(SRC)/email.cpp $(SRC)/main.cpp -I$(INC) -o $(TARGET)

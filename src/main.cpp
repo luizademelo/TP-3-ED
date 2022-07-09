@@ -3,7 +3,7 @@
 #include <unistd.h>
 #include "email.hpp"
 
-int main()
+int main(int argc, char **argv)
 {
     int opt;
     char *arquivo_entrada;
@@ -22,7 +22,10 @@ int main()
             arquivo_saida = optarg;
         }
     }
-    leEntrada(arquivo_entrada);
-
+    abreEntrada(arquivo_entrada); 
+    abreSaida(arquivo_saida); 
+    inicializaHash();
+    processaComandos(); 
+    
     return 0; 
 }

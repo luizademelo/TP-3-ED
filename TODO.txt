@@ -1,0 +1,2 @@
+ver make clean 
+tratar caso consulta de msg inexistente

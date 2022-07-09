@@ -1,0 +1,2 @@
+OK: MENSAGEM 103 PARA 5 ARMAZENADA EM 5
+CONSULTA 5 103: Bom dia, meu amigo! Tudo bom?
