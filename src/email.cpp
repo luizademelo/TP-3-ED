@@ -1,8 +1,8 @@
 #include "email.hpp"
 
 FILE *entrada, *saida;
-Hash_LE *hash; 
-int M; 
+Hash_LE *hash;
+int M;
 
 void abreEntrada(char *nome_arquivo)
 {
@@ -12,22 +12,21 @@ void abreEntrada(char *nome_arquivo)
 void inicializaHash()
 {
     fscanf(entrada, "%d\n", &M);
-    hash = new Hash_LE(M); 
+    hash = new Hash_LE(M);
 }
-
-
 
 void processaComandos()
 {
     char comando[10];
     while (fscanf(entrada, "%s\n", comando) == 1)
     {
-        if(feof(entrada)) break; 
+        if (feof(entrada))
+            break;
         if (palavrasSaoIguais(comando, "ENTREGA"))
             entrega();
         else if (palavrasSaoIguais(comando, "CONSULTA"))
             consulta();
-        else if (palavrasSaoIguais(comando, "ENTREGA"))
+        else if (palavrasSaoIguais(comando, "APAGA"))
             apaga();
     }
 }
@@ -45,7 +44,10 @@ void consulta()
 {
     int id_user, id_email;
     fscanf(entrada, "%d %d", &id_user, &id_email);
+    fprintf(saida, "CONSULTA %d %d: ", id_user, id_email);
     Email aux = hash->Pesquisa(id_user, id_email);
+    if(aux.id_usuario != id_user || aux.id_email != id_email)
+        aux.id_email = -1; 
     escreveConsulta(aux);
 }
 
@@ -85,7 +87,6 @@ void escreveEntrega(Email email)
 
 void escreveConsulta(Email email)
 {
-    fprintf(saida, "CONSULTA %d %d: ", email.id_usuario, email.id_email);
     if (email.id_email == -1)
         fprintf(saida, "MENSAGEM INEXISTENTE\n");
     else
@@ -177,6 +178,7 @@ void ArvoreBinaria::RemoveRecursivo(TipoNo *&no, int id_email)
     if (no == NULL)
     {
         fprintf(saida, "ERRO: MENSAGEM INEXISTENTE\n");
+        return; 
     }
     if (id_email < no->email.id_email)
         return RemoveRecursivo(no->esq, id_email);
@@ -184,6 +186,7 @@ void ArvoreBinaria::RemoveRecursivo(TipoNo *&no, int id_email)
         return RemoveRecursivo(no->dir, id_email);
     else
     {
+
         if (no->dir == NULL)
         {
             aux = no;
@@ -204,11 +207,11 @@ void ArvoreBinaria::RemoveRecursivo(TipoNo *&no, int id_email)
 
 Hash_LE::Hash_LE(int M)
 {
-    this->Tabela = new ArvoreBinaria[M]; 
-    for(int i = 0; i < M; i++)
+    this->Tabela = new ArvoreBinaria[M];
+    for (int i = 0; i < M; i++)
     {
-        ArvoreBinaria a; 
-        Tabela[i] = a; 
+        ArvoreBinaria a;
+        Tabela[i] = a;
     }
 }
 
